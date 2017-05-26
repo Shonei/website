@@ -4,10 +4,13 @@
   "private": true,
   "dependencies": {
     "firebase": "^4.0.0",
+    "prop-types": "^15.5.10",
     "react": "^15.5.4",
     "react-dom": "^15.5.4"
   },
   "devDependencies": {
+    "eslint": "^3.19.0",
+    "eslint-plugin-react": "^7.0.1",
     "react-scripts": "1.0.6"
   },
   "scripts": {

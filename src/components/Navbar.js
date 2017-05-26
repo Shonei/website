@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import Eggs from './Eggs';
 import AboutMe from './AboutMe';
 
 class MyClickable extends Component {
@@ -27,13 +27,13 @@ class Navbar extends Component {
 
     this.mainBody = [
       <AboutMe />,
-      <App dataStorage={this.props.dataStorage} />
-    ]
+      <Eggs dataStorage={this.props.dataStorage} />
+    ];
   }
 
   handleClick(index) {
-    ReactDOM.render(this.mainBody[index], document.getElementById('root'))
-    this.setState({activeIndex: index})
+    ReactDOM.render(this.mainBody[index], document.getElementById('root'));
+    this.setState({activeIndex: index});
   }
 
   render() {
