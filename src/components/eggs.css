@@ -1,3 +1,18 @@
 a {
 	cursor: pointer;
 }
+
+.btn {
+	position: relative;
+   	height: 100%;
+   	color: black;
+}
+
+#activeImage {
+	border-style: outset;
+	border-color: #ce93d8;
+}
+
+/*body {
+	background-color: #f3e5f5;
+}*/
