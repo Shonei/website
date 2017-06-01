@@ -17,7 +17,6 @@ class Eggs extends Component {
   componentDidMount() {
     this.database.ref('/img/aboutMe/').once('value').then(snapshot => {
       const urls = snapshot.val();
-
       const arr = [];
 
       for(let i in urls){
@@ -27,6 +26,8 @@ class Eggs extends Component {
       
       this.setState({images: arr});
     });
+
+    window.parser();
   }
 
   handleClick(index) {
@@ -52,6 +53,7 @@ class Eggs extends Component {
               action={this.handleClick}/>
           </div>
         </div>
+        <div className="fb-comments" data-href="https://website-6de1e.firebaseapp.com/" data-numposts="5"></div>
       </div>
     );
   }

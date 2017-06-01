@@ -12,11 +12,6 @@ class App extends Component {
 
     this.database.ref('/img/aboutMe/').once('value').then(snapshot => {
       const urls = snapshot.val();
-      
-      // for(let i in urls){
-      //   console.log(urls[i])
-      // }
-
       this.setState({url : urls.img1})
     });
   }

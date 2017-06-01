@@ -29,18 +29,23 @@ class AboutMe extends Component {
             <img src="aPB2KbP_700b.jpg" alt="profile" className="responsive-img"/>
           </div>
           <div className="col s12 m12 l6">
-            <h4 className="center-align">Some text</h4>
+            <h4 className="left-align">Some text</h4>
             <Text id={"text1"} />
           </div>
         </div>  
         <div className="divider"></div>
         <div className="row section">
           <div className="col s12 m12 l6">
-            <h4 className="<center-align></center-align>">Some text</h4>
+            <h4 className="left-align">Some text</h4>
             <Text id={"text2"}/>
           </div>
           <div className="col s12 m12 l6">
             <img src="aPB2KbP_700b.jpg" alt="profile" className="responsive-img"/>
+          </div>
+        </div>
+        <div className="row selection">
+          <div className="coll left-align">
+            <div className="fb-like" data-href="https://website-6de1e.firebaseapp.com/" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="false"></div>
           </div>
         </div>
       </div>
