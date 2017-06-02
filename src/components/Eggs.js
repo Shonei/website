@@ -12,6 +12,7 @@ class Eggs extends Component {
 
     this.database = this.props.dataStorage.database();
     this.handleClick = this.handleClick.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this)
   }
 
   componentDidMount() {
@@ -27,7 +28,9 @@ class Eggs extends Component {
       this.setState({images: arr});
     });
 
-    window.parser();
+    if(window.FB) {
+      window.FB.XFBML.parse();
+    }
   }
 
   handleClick(index) {

@@ -2,7 +2,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as firebase from "firebase";
-import AboutMe from './components/AboutMe';
 import Navbar from './components/Navbar';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
@@ -20,5 +19,5 @@ const config = {
 firebase.initializeApp(config);
 
 ReactDOM.render(<Navbar dataStorage={firebase} />, document.getElementById('navbar'));
-ReactDOM.render(<AboutMe />, document.getElementById('root'));
+// ReactDOM.render(<AboutMe />, document.getElementById('root'));
 registerServiceWorker();

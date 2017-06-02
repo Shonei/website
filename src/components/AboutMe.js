@@ -17,6 +17,12 @@ class Text extends Component {
 
 class AboutMe extends Component {
 
+  componentDidMount() {
+    if(window.FB) {
+      window.FB.XFBML.parse();
+    }
+  }
+
   render() {
     return (
       <div>
@@ -45,7 +51,7 @@ class AboutMe extends Component {
         </div>
         <div className="row selection">
           <div className="coll left-align">
-            <div className="fb-like" data-href="https://website-6de1e.firebaseapp.com/" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="false"></div>
+            <div className="fb-like" data-href="https://website-6de1e.firebaseapp.com/" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div> 
           </div>
         </div>
       </div>
