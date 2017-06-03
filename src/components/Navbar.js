@@ -54,7 +54,9 @@ class Navbar extends Component {
     return (
       <nav className="purple lighten-3">
         <div className="nav-wrapper">
-          <a className="brand-logo right">Logo</a>
+          <ul className="right" id="nav-mobile">
+            <li><a className="brand-logo right">Logo</a></li>
+          </ul>
           <ul id="nav-mobile" className="left">
             <MyClickable name="About me" index={0} active={String(this.state.activeIndex)==='0'} onClick={this.handleClick}/>
             <MyClickable name="Eggs" index={1} active={String(this.state.activeIndex)==='1'} onClick={this.handleClick}/>

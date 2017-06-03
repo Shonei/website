@@ -1,67 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="theme-color" content="#000000">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
-    <link rel="stylesheet" href="materialize.css">
-    <title>My awesome creation</title>
-  </head>
-  <body>
-    <div id="fb-root"></div>
-    <script>(function(d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9";
-        fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
-    window.parser;
-    window.fbAsyncInit = function() {
-      FB.init({
-        xfbml      : true,
-        version    : 'v2.6'
-      });
-      // window.parser = FB.XFBML.parse;
-    };
-    </script>
-    <div id="navbar"></div>
-    <br>
-    <main>
-    <noscript>
-    You need to enable JavaScript to run this app.
-    </noscript>
-    <div class="container">
-      <div id="root"></div>
-    </div>
-    </main>
-    
-    <footer class="page-footer purple lighten-2">
-      <div class="container">
-        <div class="row">
-          <div class="col l6 s12">
-            <h5 class="white-text">Contact us</h5>
-            <p class="grey-text text-lighten-4">Mobile phone: 123456789</p>
-            <a class="grey-text text-lighten-3" href="https://www.facebook.com/teodor.vitkov">Facebook</a>
-          </div>
-          <div class="col l4 offset-l2 s12">
-            <h5 class="white-text">Source code</h5>
-            <ul>
-              <li><a class="grey-text text-lighten-3" href="https://github.com/Shonei/website">Github</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="footer-copyright">
-        <div class="container">
-          © 2014 Copyright Text
-          <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
-        </div>
-      </div>
-    </footer>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script type="text/javascript" src="js/materialize.min.js"></script>
-  </body>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="theme-color" content="#000000">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+		<link rel="stylesheet" href="materialize.css">
+		<title>My awesome creation</title>
+	</head>
+	<body>
+		<!-- <div id="fb-root"></div> -->
+		<script>(function(d, s, id) {
+			var js, fjs = d.getElementsByTagName(s)[0];
+			
+			if (d.getElementById(id)) return;
+			
+			js = d.createElement(s); js.id = id;
+			js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9";
+			fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'facebook-jssdk'));
+		</script>
+		<div id="navbar"></div>
+		<br>
+		<main>
+		<noscript>
+		You need to enable JavaScript to run this app.
+		</noscript>
+		<div class="container">
+			<div id="root"></div>
+		</div>
+		</main>
+		
+		<footer class="page-footer purple lighten-2">
+			<div class="container">
+				<div class="row">
+					<div class="col l6 s12">
+						<h5 class="white-text">Contact us</h5>
+						<p class="grey-text text-lighten-4">Mobile phone: 123456789</p>
+						<a class="grey-text text-lighten-3" href="https://www.facebook.com/teodor.vitkov">Facebook</a>
+					</div>
+					<div class="col l4 offset-l2 s12">
+						<h5 class="white-text">Source code</h5>
+						<ul>
+							<li><a class="grey-text text-lighten-3" href="https://github.com/Shonei/website">Github</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="footer-copyright">
+				<div class="container">
+					© 2014 Copyright Text
+					<a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+				</div>
+			</div>
+		</footer>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+		<script type="text/javascript" src="js/materialize.min.js"></script>
+	</body>
 </html>
