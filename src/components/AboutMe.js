@@ -36,14 +36,14 @@ class AboutMe extends Component {
           </div>
           <div className="col s12 m12 l6">
             <h4 className="left-align">Some text</h4>
-            <Text id={"text1"} />
+            <Text id={'text1'} />
           </div>
         </div>  
         <div className="divider"></div>
         <div className="row section">
           <div className="col s12 m12 l6">
             <h4 className="left-align">Some text</h4>
-            <Text id={"text2"}/>
+            <Text id={'text2'}/>
           </div>
           <div className="col s12 m12 l6">
             <img src="aPB2KbP_700b.jpg" alt="profile" className="responsive-img"/>

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './upload.css';
 
 class Upload extends Component {
 
@@ -8,79 +7,96 @@ class Upload extends Component {
 
     this.state = {
       src : '',
-      file : ''
-    }
+      file : '',
+      selectVal : '',
+      disabled : true
+    };
     
     this.storageRef = this.props.dataStorage.storage().ref();
 
-    this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSignin = this.handleSignin.bind(this);
-  };
+    this._uploadTask = this.uploadFile.bind(this);
+    this.handleSelectChange = this.handleSelectChange.bind(this);
+    this._enableButton = this._enableButton.bind(this);
+  }
+
+  uploadFile(user, firebase, storageRef) {
+
+    const _uploadTask = storageRef.child(this.state.selectVal + '/' + this.state.file.name).put(this.state.file);
+
+    _uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, snapshot => {
+      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      // TO DO display %
+      console.log(progress);
+    }, error => console.log(error) , 
+    () => {
+      // console.log(_uploadTask.snapshot.downloadURL)
+      const database = this.props.dataStorage.database;
+
+      // Replaces character firebase doesn't allow in keys
+      const key = this.state.file.name.replace(/[.#$/[\]]/g, '');
+      const newPost = database().ref().child(this.state.selectVal);
+      
+      newPost.update({[key] : _uploadTask.snapshot.downloadURL});
+    });
+  }
+
 
   handleSignin() {
+
     const firebase = this.props.dataStorage;
     const storageRef = this.props.dataStorage.storage().ref();
 
     var provider = new firebase.auth.GoogleAuthProvider();
 
-    this.props.dataStorage.auth().signInWithPopup(provider).then(result => {
-      console.log(result)
-      const uploadTask = storageRef.child('practise/' + this.state.file.name).put(this.state.file);
-
-      uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, snapshot => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log('Upload is ' + progress + '% done');
-        switch (snapshot.state) {
-          case firebase.storage.TaskState.PAUSED:
-            console.log('Upload is paused');
-            break;
-          case firebase.storage.TaskState.RUNNING: 
-            console.log('Upload is running');
-            break;
-        }
-      }, error => console.log(error) , () => console.log(uploadTask.snapshot.downloadURL));
-    }).catch(function(error) {
-      console.log(error)
-    });
+    if(firebase.auth().currentUser) {
+      this.uploadFile(null, firebase, storageRef);
+    } else {
+      this.props.dataStorage.auth().signInWithPopup(provider)
+      .then(user => this.uploadFile(user, firebase, storageRef))
+      .catch(error => console.log(error));
+    }
   }
 
-
-  handleClick() {
-    const uploadTask = this.storageRef.child('practise/' + this.state.file.name).put(this.state.file);
-    
-    const firebase = this.props.dataStorage;
-
-    uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, snapshot => {
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      console.log('Upload is ' + progress + '% done');
-      switch (snapshot.state) {
-        case firebase.storage.TaskState.PAUSED:
-          console.log('Upload is paused');
-          break;
-        case firebase.storage.TaskState.RUNNING: 
-          console.log('Upload is running');
-          break;
-      }
-    }, error => console.log(error) , () => {
-      var downloadURL = uploadTask.snapshot.downloadURL;
-    });
-  }
-
-  handleChange(e) {
-    e.preventDefault();
+  handleChange(event) {
+    event.preventDefault();
 
     let reader = new FileReader();
-    let file = e.target.files[0];
+    let file = event.target.files[0];
 
     reader.onloadend = () => {
       this.setState({
         file: file,
         src: reader.result
       });
-    }
 
-    reader.readAsDataURL(file)
+      this._enableButton();
+    };
+    // console.log(file)
+    reader.readAsDataURL(file);
+  }
+
+  _enableButton() {
+    if(this.state.file !== '' &&
+      this.state.selectVal !== '') {
+      this.setState({disabled : false});
+    } else {
+      this.setState({disabled : true});
+    }
+  }
+
+  handleSelectChange(event) {
+    event.preventDefault();
+
+    this.setState({selectVal : event.target.value});
+
+    this._enableButton();
+  }
+
+  componentDidMount() {
+    document.getElementById('selectGallery').onchange = this.handleSelectChange;
+    window.$('#selectGallery').material_select();
   }
 
   render() {
@@ -97,6 +113,14 @@ class Upload extends Component {
                   </div>
                 </div>
               </div>
+              <div className="col s4">
+                <div className="input-field valign-wrapper">
+                  <select id="selectGallery" onChange={this.handleSelectChange}>
+                    <option value="">Choose gallery</option>
+                    <option value="eggs">Eggs</option>
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
           <div className="card-image">
@@ -107,8 +131,7 @@ class Upload extends Component {
           <div className="card-action">
             <div className="row selection">
               <div className="col s2">
-                <a className="waves-effect waves-light btn" onClick={this.handleClick}>Upload</a> 
-                <a className="waves-effect waves-light btn" onClick={this.handleSignin}>Sign In</a> 
+                <a className="waves-effect waves-light btn" disabled={this.state.disabled} onClick={this.handleSignin}>Upload</a> 
               </div>
             </div>
           </div>

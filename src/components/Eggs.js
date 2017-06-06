@@ -2,28 +2,28 @@ import React, { Component } from 'react';
 import './eggs.css';
 
 class Eggs extends Component {
-	constructor(props) {
-		super(props);
+  constructor(props) {
+    super(props);
 
-		this.state = {
+    this.state = {
       images: [],
-			currentImageIndex: 0,
-		}
+      currentImageIndex: 0,
+    };
 
     this.database = this.props.dataStorage.database();
     this.handleClick = this.handleClick.bind(this);
-    this.componentDidMount = this.componentDidMount.bind(this)
+    this.componentDidMount = this.componentDidMount.bind(this);
   }
 
   componentDidMount() {
-    this.database.ref('/img/aboutMe/').once('value').then(snapshot => {
+    this.database.ref('eggs/').once('value').then(snapshot => {
       const urls = snapshot.val();
       const arr = [];
 
       for(let i in urls){
-        const img = <img className="responsive-img image" src={urls[i]} alt={i}/> 
+        const img = <img className="responsive-img image" src={urls[i]} alt={i}/>; 
         arr.push(img);
-      };
+      }
       
       this.setState({images: arr});
     });
@@ -35,7 +35,7 @@ class Eggs extends Component {
 
   handleClick(index) {
     this.setState({currentImageIndex : index});
-  };
+  }
 
   render() {
     return (
@@ -68,11 +68,11 @@ class Thumbnails extends Component {
     
     this.handleClick = this.handleClick.bind(this);
     this.makeThumbnail = this.makeThumbnail.bind(this);
-  };
+  }
 
   handleClick() {
     this.props.action(1);
-  };
+  }
 
   makeThumbnail(index, highlight = false) {
     let i;
@@ -87,13 +87,13 @@ class Thumbnails extends Component {
     }
 
     return (
-        <ThumbnailImage 
-          action={this.props.action}
-          image={this.props.imageSet[i]}
-          index={i} 
-          highlight={highlight}/>
-      );
-  };
+      <ThumbnailImage 
+        action={this.props.action}
+        image={this.props.imageSet[i]}
+        index={i} 
+        highlight={highlight}/>
+    );
+  }
 
   render() {
     return (
@@ -118,7 +118,7 @@ class ThumbnailImage extends Component {
     super(props);
     
     this.handleClick = this.handleClick.bind(this);
-  };
+  }
 
   handleClick() {
     this.props.action(this.props.index);
@@ -134,7 +134,7 @@ class ThumbnailImage extends Component {
         </a>
       </div>
     );
-  };
+  }
 }
 
 class LargeImage extends Component {
@@ -147,7 +147,7 @@ class LargeImage extends Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.componentDidMount = this.componentDidMount.bind(this);
     this.componentWillUnmount = this.componentWillUnmount.bind(this);
-  };
+  }
 
   nextImageIndex(index) {
     const length = this.props.totalImages;
@@ -183,40 +183,40 @@ class LargeImage extends Component {
   componentDidMount() {
     document.addEventListener('keydown', this.handleKeyPress);
     document.body.style.backgroundColor = '#f3e5f5';
-  };
+  }
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeyPress);
     document.body.style.backgroundColor = 'white';
-  };
+  }
 
   render() {
     return (
-        <div>
-          <div className="row selection">
-            <div className="col s1"></div>
-            <div className="col s1">
-              <button 
-                className="btn waves-effect waves-light"
-                onClick={this.handleLeftClick}
-                onKeyDown={this.handleKeyPress}
-                >Prev</button>
-            </div>
-            <div className="col s1"></div>
-            <div className="col s6 center-align">
-              {this.props.image}
-            </div> 
-            <div className="col s1"></div>
-            <div className="col s1">
-              <button 
-                className="btn waves-effect waves-light"
-                onClick={this.handleRightClick}
-              >Next</button>
-            </div>
-            <div className=" col s1"></div>
+      <div>
+        <div className="row selection">
+          <div className="col s1"></div>
+          <div className="col s1">
+            <button 
+              className="btn waves-effect waves-light"
+              onClick={this.handleLeftClick}
+              onKeyDown={this.handleKeyPress}
+              >Prev</button>
           </div>
+          <div className="col s1"></div>
+          <div className="col s6 center-align">
+            {this.props.image}
+          </div> 
+          <div className="col s1"></div>
+          <div className="col s1">
+            <button 
+              className="btn waves-effect waves-light"
+              onClick={this.handleRightClick}
+            >Next</button>
+          </div>
+          <div className=" col s1"></div>
         </div>
-      )
+      </div>
+    );
   }
 }
 

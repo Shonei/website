@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Eggs from './Eggs';
 import Upload from './Upload';
+import Delete from './Delete';
 import AboutMe from './AboutMe';
 
 class MyClickable extends Component {
@@ -38,10 +39,11 @@ class Navbar extends Component {
     this.mainBody = [
       <AboutMe />,
       <Eggs dataStorage={this.props.dataStorage} />,
-      <Upload dataStorage={this.props.dataStorage} />
+      <Upload dataStorage={this.props.dataStorage} />,
+      <Delete dataStorage={this.props.dataStorage} />
     ];
 
-    this.handleClick = this.handleClick.bind(this)
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick(index) {
@@ -61,6 +63,7 @@ class Navbar extends Component {
             <MyClickable name="About me" index={0} active={String(this.state.activeIndex)==='0'} onClick={this.handleClick}/>
             <MyClickable name="Eggs" index={1} active={String(this.state.activeIndex)==='1'} onClick={this.handleClick}/>
             <MyClickable name="Upload" index={2} active={String(this.state.activeIndex)==='2'} onClick={this.handleClick}/>
+            <MyClickable name="Delete" index={3} active={String(this.state.activeIndex)==='3'} onClick={this.handleClick}/>
           </ul>
         </div>
       </nav>
