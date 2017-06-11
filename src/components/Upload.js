@@ -16,29 +16,32 @@ class Upload extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSignin = this.handleSignin.bind(this);
-    this._uploadTask = this.uploadFile.bind(this);
     this.handleSelectChange = this.handleSelectChange.bind(this);
     this._enableButton = this._enableButton.bind(this);
   }
 
   uploadFile(user, firebase, storageRef) {
 
-    const _uploadTask = storageRef.child(this.state.selectVal + '/' + this.state.file.name).put(this.state.file);
+    const uploadTask = storageRef.child(this.state.selectVal + '/' + this.state.file.name).put(this.state.file);
 
-    _uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, snapshot => {
+    uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, snapshot => {
       const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
       // TO DO display %
       console.log(progress);
     }, error => console.log(error) , 
     () => {
-      // console.log(_uploadTask.snapshot.downloadURL)
+      // console.log(uploadTask.snapshot.downloadURL)
       const database = this.props.dataStorage.database;
 
       // Replaces character firebase doesn't allow in keys
       const key = this.state.file.name.replace(/[.#$/[\]]/g, '');
       const newPost = database().ref().child(this.state.selectVal);
       
-      newPost.update({[key] : _uploadTask.snapshot.downloadURL});
+      newPost.update({[key] : {
+      	url: uploadTask.snapshot.downloadURL,
+      	name: this.state.file.name,
+      	description: ''
+      }});
     });
   }
 
@@ -115,7 +118,7 @@ class Upload extends Component {
               </div>
               <div className="col s4">
                 <div className="input-field valign-wrapper">
-                  <select id="selectGallery" onChange={this.handleSelectChange}>
+                  <select id="selectGallery">
                     <option value="">Choose gallery</option>
                     <option value="eggs">Eggs</option>
                   </select>

@@ -5,11 +5,125 @@ class Delete extends Component {
   constructor(props){
     super(props);
 
+    this.state = {
+      nodes: '',
+      toBeRemoved: [],
+      selectedVal: ''
+    }
+
+    this.database = this.props.dataStorage.database();
+    this.storage = this.props.dataStorage.storage().ref();
+
     this.handleSelectChange = this.handleSelectChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.renderImages = this.renderImages.bind(this);
+    this.renderRow = this.renderRow.bind(this);
+    this.addToRemoveList = this.addToRemoveList.bind(this);
+    this.delete = this.delete.bind(this);
   }
 
   handleSelectChange(event) {
     event.preventDefault();
+    this.database.ref(event.target.value + '/').once('value').then(snapshot => {
+      const nodes = snapshot.val();
+      const arr = [];
+
+      for(let i in nodes){
+        nodes[i].highlight = false;
+        nodes[i].databaseRef = i;
+        arr.push(nodes[i]);
+      }
+
+      this.setState({nodes : arr});
+    });
+
+    this.setState({selectedVal : event.target.value})
+  }
+
+  delete(user) {
+    this.state.toBeRemoved.forEach(ele => {
+      this.database.ref(this.state.selectedVal + '/' + ele.databaseRef).remove();
+    
+      this.storage.child(this.state.selectedVal + '/' + ele.name).delete().then(data => {
+        console.log('Done');
+      }).catch(error => {
+        console.log('Fail');
+      })
+    })
+  }
+
+  handleClick() {
+    const firebase = this.props.dataStorage;
+
+    var provider = new firebase.auth.GoogleAuthProvider();
+
+    if(firebase.auth().currentUser) {
+      this.delete();
+    } else {
+      this.props.dataStorage.auth().signInWithPopup(provider)
+      .then(this.delete)
+      .catch(error => console.log(error));
+    }
+  }
+
+  addToRemoveList(node) {
+    const arr = this.state.toBeRemoved;
+
+    for(let i = 0; i < arr.length; i++) {
+      if(arr[i].url === node.url) {
+        arr.splice(i, 1);
+        node.highlight = false;
+        this.setState({toBeRemoved : arr});
+        return;
+      }
+    }
+
+    node.highlight = true;
+    arr.push(node);
+    this.setState({toBeRemoved : arr});
+  }
+
+  renderRow(index, nodes) {
+    const arr = []
+
+    for(let i = 0; i < 3; i++) {
+      if(!nodes[i+index]) {
+        break;
+      }
+
+      arr.push(
+        <div 
+          key={i+index} 
+          className={nodes[i+index].highlight ? "col s3 z-depth-5" : "col s3"}>
+          <a onClick={() => {this.addToRemoveList(nodes[i+index])}}>
+            <img className="responsive-img image" src={nodes[i+index].url} alt={nodes[i+index].name}/>
+          </a>
+        </div>);
+    }
+    
+    return arr;
+  }
+
+  renderImages(nodes) {
+    if(!nodes) {
+      return;
+    }
+
+    let rowCount = nodes.length % 3 === 0 ? ((nodes.length / 3) >> 0) - 1 : nodes.length % 3; 
+    const arr = [];
+
+    for(let imageRows = 0; imageRows <= rowCount; imageRows++) {
+      arr.push(
+        <div key={imageRows} className="row section">
+          <div className="valign-wrapper center-align">
+            <div className="col s1"></div>
+              {this.renderRow(imageRows * 3, nodes)}
+            <div className="col s1"></div>
+          </div>
+        </div>);
+    }
+
+    return arr;
   }
 
   componentDidMount() {
@@ -34,11 +148,14 @@ class Delete extends Component {
             </div>
           </div>
           <div className="card-image">
-
+            {this.renderImages(this.state.nodes)}
           </div>
           <div className="card-action">
             <div className="row selection">
-
+            <button 
+              className="btn waves-effect waves-light"
+              onClick={this.handleClick}
+            >Delete</button>
             </div>
           </div>
         </div>
