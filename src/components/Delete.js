@@ -109,7 +109,7 @@ class Delete extends Component {
       return;
     }
 
-    let rowCount = nodes.length % 3 === 0 ? ((nodes.length / 3) >> 0) - 1 : nodes.length % 3; 
+    let rowCount =(nodes.length-1 / 3) >> 0; 
     const arr = [];
 
     for(let imageRows = 0; imageRows <= rowCount; imageRows++) {
