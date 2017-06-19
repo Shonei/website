@@ -4,13 +4,17 @@ class Upload extends Component {
 
   constructor(props){
     super(props);
-
+    // console.log(this.props.dataStorage.auth().currentUser)
     this.state = {
       src : '',
       file : '',
       selectVal : '',
-      disabled : true
+      disabled : true,
+      message : '',
+      log: this.props.dataStorage.auth().currentUser ? 'Log off' : 'Log in',
     };
+
+    this.css = { color:'#ab47bc'};
     
     this.storageRef = this.props.dataStorage.storage().ref();
 
@@ -18,6 +22,7 @@ class Upload extends Component {
     this.handleSignin = this.handleSignin.bind(this);
     this.handleSelectChange = this.handleSelectChange.bind(this);
     this._enableButton = this._enableButton.bind(this);
+    this.handleUserLogIn = this.handleUserLogIn.bind(this);
   }
 
   uploadFile(user, firebase, storageRef) {
@@ -26,11 +31,30 @@ class Upload extends Component {
 
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, snapshot => {
       const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      // TO DO display %
-      console.log(progress);
-    }, error => console.log(error) , 
+      this.setState({message : 'Upload %: ' + progress});
+    }, error => {
+      switch (error.code) {
+        case 'storage/unauthorized':
+          this.setState({message : 'Error: You dont have permission to upload files'});
+          break;
+
+        case 'storage/quota_exceeded':
+          this.setState({message : 'Error: The server storage is full.'});
+          break;
+
+        case 'storage/invalid_checksum':
+          this.setState({message : 'Error: Reupload the file and try again.'});
+          break;
+
+        case 'storage/unknown':
+          this.setState({message : 'We are expiriencing technical difficulties.'});
+          break;
+
+        default:
+          this.setState({message : 'Error: Please try refreshing the page and try again'});
+      }
+    }, 
     () => {
-      // console.log(uploadTask.snapshot.downloadURL)
       const database = this.props.dataStorage.database;
 
       // Replaces character firebase doesn't allow in keys
@@ -42,6 +66,8 @@ class Upload extends Component {
       	name: this.state.file.name,
       	description: ''
       }});
+
+      this.setState({message : 'File upload done.'})
     });
   }
 
@@ -51,7 +77,7 @@ class Upload extends Component {
     const firebase = this.props.dataStorage;
     const storageRef = this.props.dataStorage.storage().ref();
 
-    var provider = new firebase.auth.GoogleAuthProvider();
+    const provider = new firebase.auth.GoogleAuthProvider();
 
     if(firebase.auth().currentUser) {
       this.uploadFile(null, firebase, storageRef);
@@ -71,7 +97,7 @@ class Upload extends Component {
     reader.onloadend = () => {
       this.setState({
         file: file,
-        src: reader.result
+        src: reader.result,
       });
 
       this._enableButton();
@@ -97,6 +123,21 @@ class Upload extends Component {
     this._enableButton();
   }
 
+  handleUserLogIn() {
+    const firebase = this.props.dataStorage;
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    if(firebase.auth().currentUser) {
+      firebase.auth().signOut()
+        .then(() => this.setState({log : 'Log in'}))
+        .catch(error => this.setState({message : 'We had a problem with loggin you off'}));
+    } else {
+      this.props.dataStorage.auth().signInWithPopup(provider)
+      .then(user => this.setState({log : 'Log off'}))
+      .catch(error => this.setState({message : 'There was a problem with loging in'}));
+    }
+  }
+
   componentDidMount() {
     document.getElementById('selectGallery').onchange = this.handleSelectChange;
     window.$('#selectGallery').material_select();
@@ -108,7 +149,7 @@ class Upload extends Component {
         <div className="card purple lighten-4">
           <div className="card-content">
             <div className="row selection">
-              <div className="col s2">
+              <div className="col s6 m2">
                 <div className="file-field input-field valign-wrapper">
                   <div className="btn">
                     <span>File</span>
@@ -116,13 +157,16 @@ class Upload extends Component {
                   </div>
                 </div>
               </div>
-              <div className="col s4">
+              <div className="col s6 m4">
                 <div className="input-field valign-wrapper">
                   <select id="selectGallery">
                     <option value="">Choose gallery</option>
                     <option value="eggs">Eggs</option>
                   </select>
                 </div>
+              </div>
+              <div className="col s12">
+              <p style={this.css}>{this.state.message}</p>
               </div>
             </div>
           </div>
@@ -133,8 +177,11 @@ class Upload extends Component {
           </div>
           <div className="card-action">
             <div className="row selection">
-              <div className="col s2">
+              <div className="col s6 m3">
                 <a className="waves-effect waves-light btn" disabled={this.state.disabled} onClick={this.handleSignin}>Upload</a> 
+              </div>
+              <div className="col s6 m3">
+                <a className="waves-effect waves-light btn" onClick={this.handleUserLogIn}>{this.state.log}</a> 
               </div>
             </div>
           </div>

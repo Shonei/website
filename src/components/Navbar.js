@@ -34,6 +34,7 @@ class Navbar extends Component {
 
     this.state = {
       activeIndex: (currentState !== null) ? currentState : 0,
+      log: 'Log in',
     };
 
     this.mainBody = [
@@ -43,7 +44,11 @@ class Navbar extends Component {
       <Delete dataStorage={this.props.dataStorage} />
     ];
 
+    this.provider = new this.props.dataStorage.auth.GoogleAuthProvider();
+
     this.handleClick = this.handleClick.bind(this);
+
+    // console.log(this.props.dataStorage.auth().currentUser)
   }
 
   handleClick(index) {
@@ -56,9 +61,6 @@ class Navbar extends Component {
     return (
       <nav className="purple lighten-3">
         <div className="nav-wrapper">
-          <ul className="right" id="nav-mobile">
-            <li><a className="brand-logo right">Logo</a></li>
-          </ul>
           <ul id="nav-mobile" className="left">
             <MyClickable name="About me" index={0} active={String(this.state.activeIndex)==='0'} onClick={this.handleClick}/>
             <MyClickable name="Eggs" index={1} active={String(this.state.activeIndex)==='1'} onClick={this.handleClick}/>

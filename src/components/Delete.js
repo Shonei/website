@@ -8,8 +8,12 @@ class Delete extends Component {
     this.state = {
       nodes: '',
       toBeRemoved: [],
-      selectedVal: ''
+      selectedVal: '',
+      message: '',
+      log: this.props.dataStorage.auth().currentUser ? 'Log off' : 'Log in',
     }
+
+    this.css = { color:'#ab47bc'};
 
     this.database = this.props.dataStorage.database();
     this.storage = this.props.dataStorage.storage().ref();
@@ -20,6 +24,7 @@ class Delete extends Component {
     this.renderRow = this.renderRow.bind(this);
     this.addToRemoveList = this.addToRemoveList.bind(this);
     this.delete = this.delete.bind(this);
+    this.handleUserLogIn = this.handleUserLogIn.bind(this);
   }
 
   handleSelectChange(event) {
@@ -42,12 +47,31 @@ class Delete extends Component {
 
   delete(user) {
     this.state.toBeRemoved.forEach(ele => {
-      this.database.ref(this.state.selectedVal + '/' + ele.databaseRef).remove();
     
       this.storage.child(this.state.selectedVal + '/' + ele.name).delete().then(data => {
-        console.log('Done');
+        this.database.ref(this.state.selectedVal + '/' + ele.databaseRef).remove();
+        this.setState({message : 'Files have been deleted'});
       }).catch(error => {
-        console.log('Fail');
+        switch (error.code) {
+          case 'storage/unauthorized':
+            this.setState({message : 'Error: You dont have permission to upload files'});
+            break;
+
+          case 'storage/quota_exceeded':
+            this.setState({message : 'Error: The server storage is full.'});
+            break;
+
+          case 'storage/invalid_checksum':
+            this.setState({message : 'Error: Reupload the file and try again.'});
+            break;
+
+          case 'storage/unknown':
+            this.setState({message : 'We are expiriencing technical difficulties.'});
+            break;
+
+          default:
+            this.setState({message : 'Error: Please try refreshing the page and try again'});
+        }
       })
     })
   }
@@ -63,6 +87,21 @@ class Delete extends Component {
       this.props.dataStorage.auth().signInWithPopup(provider)
       .then(this.delete)
       .catch(error => console.log(error));
+    }
+  }
+
+  handleUserLogIn() {
+    const firebase = this.props.dataStorage;
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    if(firebase.auth().currentUser) {
+      firebase.auth().signOut()
+        .then(() => this.setState({log : 'Log in'}))
+        .catch(error => this.setState({message : 'We had a problem with loggin you off'}));
+    } else {
+      this.props.dataStorage.auth().signInWithPopup(provider)
+      .then(user => this.setState({log : 'Log off'}))
+      .catch(error => this.setState({message : 'There was a problem with loging in'}));
     }
   }
 
@@ -144,6 +183,9 @@ class Delete extends Component {
                     <option value="eggs">Eggs</option>
                   </select>
                 </div>
+                <div className="col s12">
+                  <p style={this.css}>{this.state.message}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -152,10 +194,18 @@ class Delete extends Component {
           </div>
           <div className="card-action">
             <div className="row selection">
-            <button 
-              className="btn waves-effect waves-light"
-              onClick={this.handleClick}
-            >Delete</button>
+              <div className="col s6 m3">
+                <button 
+                  className="btn waves-effect waves-light"
+                  onClick={this.handleClick}
+                >Delete</button>
+              </div>
+              <div className="col s6 m3">
+                <button 
+                  className="btn waves-effect waves-light"
+                  onClick={this.handleUserLogIn}
+                >{this.state.log}</button>
+              </div>
             </div>
           </div>
         </div>
