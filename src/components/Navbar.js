@@ -44,11 +44,9 @@ class Navbar extends Component {
       <Delete dataStorage={this.props.dataStorage} />
     ];
 
-    this.provider = new this.props.dataStorage.auth.GoogleAuthProvider();
+    // this.provider = new this.props.dataStorage.auth.GoogleAuthProvider();
 
     this.handleClick = this.handleClick.bind(this);
-
-    // console.log(this.props.dataStorage.auth().currentUser)
   }
 
   handleClick(index) {
@@ -64,6 +62,8 @@ class Navbar extends Component {
           <ul id="nav-mobile" className="left">
             <MyClickable name="About me" index={0} active={String(this.state.activeIndex)==='0'} onClick={this.handleClick}/>
             <MyClickable name="Eggs" index={1} active={String(this.state.activeIndex)==='1'} onClick={this.handleClick}/>
+          </ul>
+          <ul id="nav-mobile" className="right">
             <MyClickable name="Upload" index={2} active={String(this.state.activeIndex)==='2'} onClick={this.handleClick}/>
             <MyClickable name="Delete" index={3} active={String(this.state.activeIndex)==='3'} onClick={this.handleClick}/>
           </ul>

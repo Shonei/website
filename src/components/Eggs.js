@@ -8,6 +8,7 @@ class Eggs extends Component {
 
     this.state = {
       images: [],
+      descriptions: [],
       currentImageIndex: 0,
     };
 
@@ -19,14 +20,19 @@ class Eggs extends Component {
   componentDidMount() {
     this.database.ref('eggs/').once('value').then(snapshot => {
       const nodes = snapshot.val();
-      const arr = [];
+      const imageArr = [];
+      const descriptionArr = [];
 
-      for(let i in nodes){
-        const img = <img className="responsive-img image" src={nodes[i].url} alt={i}/>; 
-        arr.push(img);
+      for(let i in nodes){; 
+        const img = <img className="responsive-img image" src={nodes[i].url} alt={i}/>;
+        const description = <p className="center-align">{nodes[i].description}</p>;
+        
+        imageArr.push(img);
+        descriptionArr.push(description);
       }
       
-      this.setState({images: arr});
+      this.setState({images: imageArr});
+      this.setState({descriptions: descriptionArr});
     });
 
     if(window.FB) {
@@ -52,6 +58,7 @@ class Eggs extends Component {
           <div className="card-image">
             <LargeImage 
               image={this.state.images[this.state.currentImageIndex]}
+              description={this.state.descriptions[this.state.currentImageIndex]}
               currentIndex={this.state.currentImageIndex}
               totalImages={this.state.images.length}
               action={this.handleClick}/>
@@ -97,14 +104,16 @@ class LargeImage extends Component {
 
   handleLeftClick() {
     this.props.action(this.nextImageIndex(this.props.currentIndex-1));
+    this.refs.focusEl.scrollIntoView();
   }
 
   handleRightClick() {
     this.props.action(this.nextImageIndex(this.props.currentIndex+1));
+    this.refs.focusEl.scrollIntoView();
   }
 
   handleTouchMove(event) {
-    if (!this.state.xDown || !this.state.yDown) {
+    if (!this.xDown || !this.yDown) {
       return;
     }
 
@@ -153,38 +162,37 @@ class LargeImage extends Component {
     document.body.style.backgroundColor = 'white';
   }
 
-  componentDidUpdate() {
-    
-  }
-
   render() {
     return (
       <div>
         <div className="row"/>
-        <div className="row selection">
-          <div className="col s1 m2"/>
-          <div className="col s5 m2">
-            <button 
-              className="btn waves-effect waves-light"
-              onClick={this.handleLeftClick}
-              onKeyDown={this.handleKeyPress}
-              >Prev</button>
+        <div ref="focusEl">
+          <div className="row selection">
+            <div className="col s1 m2"/>
+            <div className="col s5 m2">
+              <button 
+                className="btn waves-effect waves-light"
+                onClick={this.handleLeftClick}
+                onKeyDown={this.handleKeyPress}
+                >Prev</button>
+            </div>
+            <div className="col m4"/>
+            <div className="col s5 m2">
+              <button 
+                className="btn waves-effect waves-light"
+                onClick={this.handleRightClick}
+              >Next</button>
+            </div>
+            <div className="col  s1 m2"/>
           </div>
-          <div className="col m4"/>
-          <div className="col s5 m2">
-            <button 
-              className="btn waves-effect waves-light"
-              onClick={this.handleRightClick}
-            >Next</button>
+          <div className="row selection">
+            <div className="col s1"/>
+            <div className="col s10 center-align">
+              {this.props.image}
+              {this.props.description}
+            </div> 
+            <div className="col s1"/>
           </div>
-          <div className="col  s1 m2"/>
-        </div>
-        <div className="row selection">
-          <div className="col s1"/>
-          <div className="col s10 center-align">
-            {this.props.image}
-          </div> 
-          <div className="col s1"/>
         </div>
         <div className="row"/>
       </div>
