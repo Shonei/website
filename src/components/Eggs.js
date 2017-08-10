@@ -23,7 +23,7 @@ class Eggs extends Component {
       const imageArr = [];
       const descriptionArr = [];
 
-      for(let i in nodes){; 
+      for(let i in nodes) {
         const img = <img className="responsive-img image" src={nodes[i].url} alt={i}/>;
         const description = <p className="center-align">{nodes[i].description}</p>;
         

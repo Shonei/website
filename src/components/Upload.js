@@ -11,8 +11,17 @@ class Upload extends Component {
       selectVal : '',
       disabled : true,
       message : '',
-      log: this.props.dataStorage.auth().currentUser ? 'Log off' : 'Log in',
+      log: 'Log in',
+      description: ''
     };
+
+    this.props.dataStorage.auth().onAuthStateChanged(user => {
+      if(user) {
+        this.setState({log : 'Logg off'});
+      } else {
+        this.setState({log : 'Logg in'});
+      }
+    })
 
     this.css = { color:'#ab47bc'};
     
@@ -64,7 +73,7 @@ class Upload extends Component {
       newPost.update({[key] : {
       	url: uploadTask.snapshot.downloadURL,
       	name: this.state.file.name,
-      	description: ''
+      	description: this.state.description
       }});
 
       this.setState({message : 'File upload done.'})
@@ -141,6 +150,8 @@ class Upload extends Component {
   componentDidMount() {
     document.getElementById('selectGallery').onchange = this.handleSelectChange;
     window.$('#selectGallery').material_select();
+    // window.$('#description').val('New Text');
+    window.$('#description').trigger('autoresize');
   }
 
   render() {
@@ -172,7 +183,19 @@ class Upload extends Component {
           </div>
           <div className="card-image">
             <div className="col s10">
-              <img className="responsive-img image center-align" src={this.state.src} alt='Hello'/> 
+              <img className="responsive-img image center-align" src={this.state.src} alt=''/> 
+            </div>
+          </div>
+          <div className="card-content">
+            <div className="row">
+              <form className="col s12">
+                <div className="row">
+                  <div className="input-field col s12">
+                    <textarea id="description" className="materialize-textarea" onChange={event =>this.setState({description: event.target.value})}></textarea>
+                    <label htmlFor="description">Description</label>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
           <div className="card-action">
