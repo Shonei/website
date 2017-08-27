@@ -17,9 +17,9 @@ class Upload extends Component {
 
     this.props.dataStorage.auth().onAuthStateChanged(user => {
       if(user) {
-        this.setState({log : 'Logg off'});
+        this.setState({log : 'Log off'});
       } else {
-        this.setState({log : 'Logg in'});
+        this.setState({log : 'Log in'});
       }
     })
 
@@ -28,7 +28,7 @@ class Upload extends Component {
     this.storageRef = this.props.dataStorage.storage().ref();
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleSignin = this.handleSignin.bind(this);
+    this.handleUpload = this.handleUpload.bind(this);
     this.handleSelectChange = this.handleSelectChange.bind(this);
     this._enableButton = this._enableButton.bind(this);
     this.handleUserLogIn = this.handleUserLogIn.bind(this);
@@ -81,12 +81,14 @@ class Upload extends Component {
   }
 
 
-  handleSignin() {
+  handleUpload() {
 
     const firebase = this.props.dataStorage;
     const storageRef = this.props.dataStorage.storage().ref();
 
     const provider = new firebase.auth.GoogleAuthProvider();
+
+    this.refs.focusEl.scrollIntoView();
 
     if(firebase.auth().currentUser) {
       this.uploadFile(null, firebase, storageRef);
@@ -173,11 +175,13 @@ class Upload extends Component {
                   <select id="selectGallery">
                     <option value="">Choose gallery</option>
                     <option value="eggs">Eggs</option>
+                    <option value="jewellry">Jewellry</option>
+                    <option value="embroidery">Embroidery</option>
                   </select>
                 </div>
               </div>
               <div className="col s12">
-              <p style={this.css}>{this.state.message}</p>
+              <p ref="focusEl" style={this.css}>{this.state.message}</p>
               </div>
             </div>
           </div>
@@ -201,7 +205,7 @@ class Upload extends Component {
           <div className="card-action">
             <div className="row selection">
               <div className="col s6 m3">
-                <a className="waves-effect waves-light btn" disabled={this.state.disabled} onClick={this.handleSignin}>Upload</a> 
+                <a className="waves-effect waves-light btn" disabled={this.state.disabled} onClick={this.handleUpload}>Upload</a> 
               </div>
               <div className="col s6 m3">
                 <a className="waves-effect waves-light btn" onClick={this.handleUserLogIn}>{this.state.log}</a> 

@@ -1,26 +1,26 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Eggs from './Eggs';
+import Gallery from './Gallery';
 import Upload from './Upload';
 import Delete from './Delete';
 import AboutMe from './AboutMe';
 
 class MyClickable extends Component {
 
-  handleClick() {
-    this.props.onClick(this.props.index);
-  }
-
   componentDidMount() {
     if(this.props.active) {
       this.props.onClick(this.props.index);
     }
   }
+  
+  handleClick() {
+    this.props.onClick(this.props.index);
+  }
 
   render () {
     return (
       <li className={this.props.active ? 'active' : ''} onClick={this.handleClick.bind(this)}>
-        <a>{this.props.name}</a>
+        <a href="#!">{this.props.name}</a>
       </li>
     );
   }
@@ -34,19 +34,25 @@ class Navbar extends Component {
 
     this.state = {
       activeIndex: (currentState !== null) ? currentState : 0,
-      log: 'Log in',
     };
 
     this.mainBody = [
       <AboutMe />,
-      <Eggs dataStorage={this.props.dataStorage} />,
       <Upload dataStorage={this.props.dataStorage} />,
-      <Delete dataStorage={this.props.dataStorage} />
+      <Delete dataStorage={this.props.dataStorage} />,
+      <Gallery dataStorage={this.props.dataStorage} databasePath='eggs' />,
+      <Gallery dataStorage={this.props.dataStorage} databasePath='jewellry' />,
+      <Gallery dataStorage={this.props.dataStorage} databasePath='embroidery' />
     ];
 
     // this.provider = new this.props.dataStorage.auth.GoogleAuthProvider();
 
     this.handleClick = this.handleClick.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
+  }
+
+  componentDidMount() {
+    window.$(".dropdown-button").dropdown();
   }
 
   handleClick(index) {
@@ -57,18 +63,26 @@ class Navbar extends Component {
 
   render() {
     return (
-      <nav className="purple lighten-3">
-        <div className="nav-wrapper">
-          <ul id="nav-mobile" className="left">
-            <MyClickable name="About me" index={0} active={String(this.state.activeIndex)==='0'} onClick={this.handleClick}/>
-            <MyClickable name="Eggs" index={1} active={String(this.state.activeIndex)==='1'} onClick={this.handleClick}/>
-          </ul>
-          <ul id="nav-mobile" className="right">
-            <MyClickable name="Upload" index={2} active={String(this.state.activeIndex)==='2'} onClick={this.handleClick}/>
-            <MyClickable name="Delete" index={3} active={String(this.state.activeIndex)==='3'} onClick={this.handleClick}/>
-          </ul>
-        </div>
-      </nav>
+      <div>
+        <ul id="admin-actions" className="dropdown-content">
+          <MyClickable name="Upload" index={1} active={String(this.state.activeIndex)==='1'} onClick={this.handleClick}/>
+          <MyClickable name="Delete" index={2} active={String(this.state.activeIndex)==='2'} onClick={this.handleClick}/>
+        </ul>
+        <ul id="galleries" className="dropdown-content">
+          <MyClickable name="Eggs" index={3} active={String(this.state.activeIndex)==='3'} onClick={this.handleClick}/>
+          <MyClickable name="Jewellry" index={4} active={String(this.state.activeIndex)==='4'} onClick={this.handleClick}/>
+          <MyClickable name="Embroidery" index={5} active={String(this.state.activeIndex)==='5'} onClick={this.handleClick}/>
+        </ul>
+        <nav className="purple lighten-3">
+          <div className="nav-wrapper">
+            <ul>
+              <MyClickable name="About me" index={0} active={String(this.state.activeIndex)==='0'} onClick={this.handleClick}/>
+              <li><a className="dropdown-button" href="#!" data-activates="galleries">Galleries<i className="material-icons right">arrow_drop_down</i></a></li>
+              <li className="right"><a className="dropdown-button" href="#!" data-activates="admin-actions">Admin<i className="material-icons right">arrow_drop_down</i></a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
     );
   }
 }

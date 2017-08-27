@@ -75,4 +75,4 @@ class ThumbnailImage extends Component {
   }
 }
 
-export {ThumbnailImage, Thumbnails};
+export default Thumbnails;

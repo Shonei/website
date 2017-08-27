@@ -81,6 +81,8 @@ class Delete extends Component {
 
     var provider = new firebase.auth.GoogleAuthProvider();
 
+    this.refs.focusEl.scrollIntoView();
+
     if(firebase.auth().currentUser) {
       this.delete();
     } else {
@@ -181,10 +183,12 @@ class Delete extends Component {
                   <select id="selectDelete">
                     <option value="">Choose gallery</option>
                     <option value="eggs">Eggs</option>
+                    <option value="jewellry">Jewellry</option>
+                    <option value="embroidery">Embroidery</option>
                   </select>
                 </div>
                 <div className="col s12">
-                  <p style={this.css}>{this.state.message}</p>
+                  <p ref="focusEl" style={this.css}>{this.state.message}</p>
                 </div>
               </div>
             </div>
