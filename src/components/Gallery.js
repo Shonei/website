@@ -20,6 +20,14 @@ class Gallery extends Component {
     this.componentDidMount = this.componentDidMount.bind(this);
     this.updateImages = this.updateImages.bind(this);
   }
+
+  componentDidMount() {
+    this.updateImages(this.state.databasePath);
+
+    if(window.FB) {
+      window.FB.XFBML.parse();
+    }
+  }
   
   componentWillReceiveProps(nextProps) {
     this.setState({databasePath: nextProps.databasePath});
@@ -45,14 +53,6 @@ class Gallery extends Component {
     });
   }
 
-  componentDidMount() {
-    this.updateImages(this.state.databasePath);
-
-    if(window.FB) {
-      window.FB.XFBML.parse();
-    }
-  }
-
   handleClick(index) {
     this.setState({currentImageIndex : index});
   }
@@ -65,19 +65,21 @@ class Gallery extends Component {
             <Thumbnails 
               imageSet={this.state.images}
               action={this.handleClick}
-              largeImageIndex={this.state.currentImageIndex}/>
+              largeImageIndex={this.state.currentImageIndex}
+            />
             </div>
-          <div className="divider"></div>
+          <div className="divider"/>
           <div className="card-image">
             <LargeImage 
               image={this.state.images[this.state.currentImageIndex]}
               description={this.state.descriptions[this.state.currentImageIndex]}
               currentIndex={this.state.currentImageIndex}
               totalImages={this.state.images.length}
-              action={this.handleClick}/>
+              action={this.handleClick}
+            />
           </div>
         </div>
-        <div className="fb-comments" data-href="https://website-6de1e.firebaseapp.com/" data-numposts="5"></div>
+        <div className="fb-comments" data-href="https://website-6de1e.firebaseapp.com/" data-numposts="5"/>
       </div>
     );
   }

@@ -21,7 +21,7 @@ class Upload extends Component {
       } else {
         this.setState({log : 'Log in'});
       }
-    })
+    });
 
     this.css = { color:'#ab47bc'};
     
@@ -32,6 +32,13 @@ class Upload extends Component {
     this.handleSelectChange = this.handleSelectChange.bind(this);
     this._enableButton = this._enableButton.bind(this);
     this.handleUserLogIn = this.handleUserLogIn.bind(this);
+  }
+
+  componentDidMount() {
+    document.getElementById('selectGallery').onchange = this.handleSelectChange;
+    window.$('#selectGallery').material_select();
+    // window.$('#description').val('New Text');
+    window.$('#description').trigger('autoresize');
   }
 
   uploadFile(user, firebase, storageRef) {
@@ -71,15 +78,14 @@ class Upload extends Component {
       const newPost = database().ref().child(this.state.selectVal);
       
       newPost.update({[key] : {
-      	url: uploadTask.snapshot.downloadURL,
-      	name: this.state.file.name,
-      	description: this.state.description
+        url: uploadTask.snapshot.downloadURL,
+        name: this.state.file.name,
+        description: this.state.description
       }});
 
-      this.setState({message : 'File upload done.'})
+      this.setState({message : 'File upload done.'});
     });
   }
-
 
   handleUpload() {
 
@@ -108,7 +114,7 @@ class Upload extends Component {
     reader.onloadend = () => {
       this.setState({
         file: file,
-        src: reader.result,
+        src: reader.result
       });
 
       this._enableButton();
@@ -147,13 +153,6 @@ class Upload extends Component {
       .then(user => this.setState({log : 'Log off'}))
       .catch(error => this.setState({message : 'There was a problem with loging in'}));
     }
-  }
-
-  componentDidMount() {
-    document.getElementById('selectGallery').onchange = this.handleSelectChange;
-    window.$('#selectGallery').material_select();
-    // window.$('#description').val('New Text');
-    window.$('#description').trigger('autoresize');
   }
 
   render() {
@@ -195,7 +194,7 @@ class Upload extends Component {
               <form className="col s12">
                 <div className="row">
                   <div className="input-field col s12">
-                    <textarea id="description" className="materialize-textarea" onChange={event =>this.setState({description: event.target.value})}></textarea>
+                    <textarea id="description" className="materialize-textarea" onChange={event =>this.setState({description: event.target.value})}/>
                     <label htmlFor="description">Description</label>
                   </div>
                 </div>

@@ -9,7 +9,7 @@ class Text extends Component {
         <p className="center-left read-more-wrap">Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
           <span className="read-more-target">Libero fuga facilis vel consectetur quos sapiente deleniti eveniet dolores tempore eos deserunt officia quis ab? Excepturi vero tempore minus beatae voluptatem!</span>
         </p>
-        <label htmlFor={this.props.id} className="read-more-trigger"></label>
+        <label htmlFor={this.props.id} className="read-more-trigger"/>
       </div>
     );
   }
@@ -29,7 +29,7 @@ class AboutMe extends Component {
         <div className="row selection">
           <h2 className="center-align">Heading</h2>
         </div>
-        <div className="divider"></div>
+        <div className="divider"/>
         <div className="row section">
           <div className="col s12 m12 l6">
             <img src="aPB2KbP_700b.jpg" alt="profile" className="responsive-img"/>
@@ -39,7 +39,7 @@ class AboutMe extends Component {
             <Text id={'text1'} />
           </div>
         </div>  
-        <div className="divider"></div>
+        <div className="divider"/>
         <div className="row section">
           <div className="col s12 m12 l6">
             <h4 className="left-align">Some text</h4>
@@ -51,7 +51,7 @@ class AboutMe extends Component {
         </div>
         <div className="row selection">
           <div className="coll left-align">
-            <div className="fb-like" data-href="https://website-6de1e.firebaseapp.com/" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div> 
+            <div className="fb-like" data-href="https://website-6de1e.firebaseapp.com/" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"/> 
           </div>
         </div>
       </div>

@@ -10,8 +10,8 @@ class Delete extends Component {
       toBeRemoved: [],
       selectedVal: '',
       message: '',
-      log: this.props.dataStorage.auth().currentUser ? 'Log off' : 'Log in',
-    }
+      log: this.props.dataStorage.auth().currentUser ? 'Log off' : 'Log in'
+    };
 
     this.css = { color:'#ab47bc'};
 
@@ -25,6 +25,11 @@ class Delete extends Component {
     this.addToRemoveList = this.addToRemoveList.bind(this);
     this.delete = this.delete.bind(this);
     this.handleUserLogIn = this.handleUserLogIn.bind(this);
+  }
+
+  componentDidMount() {
+    document.getElementById('selectDelete').onchange = this.handleSelectChange;
+    window.$('#selectDelete').material_select();
   }
 
   handleSelectChange(event) {
@@ -42,7 +47,7 @@ class Delete extends Component {
       this.setState({nodes : arr});
     });
 
-    this.setState({selectedVal : event.target.value})
+    this.setState({selectedVal : event.target.value});
   }
 
   delete(user) {
@@ -72,8 +77,8 @@ class Delete extends Component {
           default:
             this.setState({message : 'Error: Please try refreshing the page and try again'});
         }
-      })
-    })
+      });
+    });
   }
 
   handleClick() {
@@ -125,7 +130,7 @@ class Delete extends Component {
   }
 
   renderRow(index, nodes) {
-    const arr = []
+    const arr = [];
 
     for(let i = 0; i < 3; i++) {
       if(!nodes[i+index]) {
@@ -135,8 +140,9 @@ class Delete extends Component {
       arr.push(
         <div 
           key={i+index} 
-          className={nodes[i+index].highlight ? "col s3 z-depth-5" : "col s3"}>
-          <a onClick={() => {this.addToRemoveList(nodes[i+index])}}>
+          className={nodes[i+index].highlight ? "col s3 z-depth-5" : "col s3"}
+        >
+          <a onClick={() => {this.addToRemoveList(nodes[i+index]);}}>
             <img className="responsive-img image" src={nodes[i+index].url} alt={nodes[i+index].name}/>
           </a>
         </div>);
@@ -157,19 +163,14 @@ class Delete extends Component {
       arr.push(
         <div key={imageRows} className="row section">
           <div className="valign-wrapper center-align">
-            <div className="col s1"></div>
+            <div className="col s1"/>
               {this.renderRow(imageRows * 3, nodes)}
-            <div className="col s1"></div>
+            <div className="col s1"/>
           </div>
         </div>);
     }
 
     return arr;
-  }
-
-  componentDidMount() {
-    document.getElementById('selectDelete').onchange = this.handleSelectChange;
-    window.$('#selectDelete').material_select();
   }
 
   render() {

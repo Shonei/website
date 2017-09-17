@@ -17,6 +17,20 @@ class LargeImage extends Component {
     this.handleTouchStart = this.handleTouchStart.bind(this);
   }
 
+  componentDidMount() {
+    document.addEventListener('keydown', this.handleKeyPress, false);
+    document.addEventListener('touchstart', this.handleTouchStart, false);        
+    document.addEventListener('touchmove', this.handleTouchMove, false);
+    document.body.style.backgroundColor = '#f3e5f5';
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleKeyPress);
+    document.removeEventListener('touchstart', this.handleTouchStart);        
+    document.removeEventListener('touchmove', this.handleTouchMove);
+    document.body.style.backgroundColor = 'white';
+  }
+
   nextImageIndex(index) {
     const length = this.props.totalImages;
     let i;
@@ -78,20 +92,6 @@ class LargeImage extends Component {
     }
   }
 
-  componentDidMount() {
-    document.addEventListener('keydown', this.handleKeyPress, false);
-    document.addEventListener('touchstart', this.handleTouchStart, false);        
-    document.addEventListener('touchmove', this.handleTouchMove, false);
-    document.body.style.backgroundColor = '#f3e5f5';
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('keydown', this.handleKeyPress);
-    document.removeEventListener('touchstart', this.handleTouchStart);        
-    document.removeEventListener('touchmove', this.handleTouchMove);
-    document.body.style.backgroundColor = 'white';
-  }
-
   render() {
     return (
       <div>
@@ -104,7 +104,7 @@ class LargeImage extends Component {
                 className="btn waves-effect waves-light"
                 onClick={this.handleLeftClick}
                 onKeyDown={this.handleKeyPress}
-                >Prev</button>
+              >Prev</button>
             </div>
             <div className="col m4"/>
             <div className="col s5 m2">

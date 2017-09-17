@@ -17,7 +17,7 @@ class Thumbnails extends Component {
     let length = this.props.imageSet.length; 
 
     if(index >= length) {
-      i = (index === length) ? 0 : 1;
+      i = index === length ? 0 : 1;
     } else if(index < 0) {
       i = length - 1;
     } else {
@@ -29,7 +29,8 @@ class Thumbnails extends Component {
         action={this.props.action}
         image={this.props.imageSet[i]}
         index={i} 
-        highlight={highlight}/>
+        highlight={highlight}
+      />
     );
   }
 
@@ -38,12 +39,12 @@ class Thumbnails extends Component {
       <div>
         <div className="row section">
           <div className="valign-wrapper">
-            <div className="col s2"></div>
+            <div className="col s2"/>
               {this.makeThumbnail(this.props.largeImageIndex-1)}  
               {this.makeThumbnail(this.props.largeImageIndex, true)}
               {this.makeThumbnail(this.props.largeImageIndex+1)}
               {this.makeThumbnail(this.props.largeImageIndex+2)}
-            <div className="col s2"></div>
+            <div className="col s2"/>
           </div>
         </div>  
       </div>
@@ -66,7 +67,8 @@ class ThumbnailImage extends Component {
     return (
       <div 
         className={this.props.highlight ? "col s2 z-depth-5" : "col s2"}
-        id={this.props.highlight ? 'activeImage' : ''}>
+        id={this.props.highlight ? 'activeImage' : ''}
+      >
         <a onClick={this.handleClick}>
           {this.props.image}
         </a>
