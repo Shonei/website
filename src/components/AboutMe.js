@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './aboutMe.css';
+// import './aboutMe.css';
 
 class Text extends Component {
   render() {
@@ -16,6 +16,12 @@ class Text extends Component {
 }
 
 class AboutMe extends Component {
+
+  constructor(props){
+    super(props);
+
+    this.componentDidMount = this.componentDidMount.bind(this);
+  }
 
   componentDidMount() {
     if(window.FB) {
@@ -50,8 +56,8 @@ class AboutMe extends Component {
           </div>
         </div>
         <div className="row selection">
-          <div className="coll left-align">
-            <div className="fb-like" data-href="https://website-6de1e.firebaseapp.com/" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"/> 
+          <div className="col left-align">
+            {/* <div className="fb-like" data-href="https://website-6de1e.firebaseapp.com/" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"/>  */}
           </div>
         </div>
       </div>

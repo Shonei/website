@@ -1,6 +1,7 @@
 /*jshint esversion: 6 */
 import React from 'react';
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
+import { render } from 'react-snapshot';
 import * as firebase from "firebase";
 import Navbar from './components/Navbar';
 import registerServiceWorker from './registerServiceWorker';
@@ -18,6 +19,6 @@ const config = {
 
 firebase.initializeApp(config);
 
-ReactDOM.render(<Navbar dataStorage={firebase} />, document.getElementById('navbar'));
+render(<Navbar dataStorage={firebase} />, document.getElementById('navbar'));
 // ReactDOM.render(<AboutMe />, document.getElementById('root'));
 registerServiceWorker();
